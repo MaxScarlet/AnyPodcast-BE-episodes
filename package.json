@@ -3,10 +3,13 @@
   "project": "AnyPodcast",
   "description": "Episodes Service for AnyPodcast",
   "version": "1.0.0",
+  "main_entity": "Episode",
   "main": "index.js",
+
   "templ_api": "tjrvn4llzk",
   "is_authorized": false,
   "is_dydb": false,
+  
   "author": "Oxymoron Technique",
   "license": "ISC",
   "scripts": {

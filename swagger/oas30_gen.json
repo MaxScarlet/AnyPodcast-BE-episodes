@@ -1,0 +1,193 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "srv-episodes",
+        "version": "1.0.0",
+        "description": "Episodes Service for AnyPodcast"
+    },
+    "paths": {
+        "/episode": {
+            "get": {
+                "operationId": "get_all",
+                "responses": {
+                    "200": {
+                        "description": "200 response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EpisodeList"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "operationId": "create",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Episode"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "200 response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Empty"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/episode/{id}": {
+            "get": {
+                "operationId": "get",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "200 response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Episode"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "operationId": "update",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "200 response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Empty"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "delete",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "200 response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Empty"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Empty": {
+                "title": "Empty Schema",
+                "type": "object"
+            },
+            "Episode": {
+                "type": "object",
+                "properties": {
+                    "ID": {
+                        "type": "number",
+                        "default": 0
+                    },
+                    "Created": {
+                        "type": "string",
+                        "default": ""
+                    },
+                    "PodcastID": {
+                        "type": "string",
+                        "default": ""
+                    },
+                    "Title": {
+                        "type": "string",
+                        "default": ""
+                    },
+                    "Description": {
+                        "type": "string",
+                        "default": ""
+                    },
+                    "IsVisible": {
+                        "type": "boolean",
+                        "default": false
+                    },
+                    "Media": {
+                        "$ref": "#/components/schemas/Media"
+                    }
+                },
+                "title": "Episode"
+            },
+            "EpisodeList": {
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/Episode"
+                },
+                "title": "EpisodeList"
+            },
+            "Media": {
+                "type": "object",
+                "properties": {
+                    "CustomName": {
+                        "type": "string",
+                        "default": ""
+                    },
+                    "MediaID": {
+                        "type": "string",
+                        "default": ""
+                    }
+                },
+                "title": "Media"
+            }
+        }
+    },
+    "tags": [],
+    "servers": []
+}

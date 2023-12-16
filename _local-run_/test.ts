@@ -7,10 +7,19 @@ import { handler } from '../src/index';
 
 import * as apiRequestEmpty from './data/API_Event_empty.json';
 let apiRequest;
-import * as apiRequestGetList from './data/API_Event_GET.json';
-// import * as apiRequestGetList from './data/API_Event_POST_login.json';
+// import * as apiRequestGetList from './data/API_Event_GET.json';
+import * as apiRequestGetList from './data/API_Event_POST.json';
 apiRequest = merge(apiRequestEmpty, apiRequestGetList) as APIGatewayProxyEvent;
-// apiRequest.body = JSON.stringify({"email": "user1@mail.com", "pwd": "12312"})
+apiRequest.body = JSON.stringify({
+    "PodcastID": "123123",
+    "Title": "Ep-2",
+    "Description": "Descr-2",
+    "IsVisible": true,
+    "Media": {
+      "CustomName": "somefile.mp3",
+      "MediaID": "29393728119"
+    }
+  });
 
 (async () => {
     const resp = await handler(apiRequest);

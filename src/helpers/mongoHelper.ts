@@ -18,15 +18,24 @@ export default class MongoDbHelper<T extends Document> implements IDbHelper<T> {
         return await this.model.findById(id);
     }
     async create<T>(data: T): Promise<T> {
-        const item = data;
-        return <T>item;
+        const itemCreated = await this.model.create(data);
+        return <T>itemCreated;
     }
     async update<T>(id: string, updated: T): Promise<any> {
+        const found = await this.model.findById(id).exec();
+        if (!found) {
+            throw new Error(`Document with ID ${id} not found.`);
+        }
+        const updatedDocument = Object.assign(found, updated);
+        return updatedDocument.save();
     }
+
     async delete<T>(id: string): Promise<void> {
-    }   
+        await this.model.findByIdAndRemove(id);
+    }
     async find<T>(args: any): Promise<T[]> {
-        return <T[]>[];
+        const lst = await this.model.find(args).exec();
+        return <T[]>lst;
     }
 
     static generateSchemaFromInterface = (interfaceObj: any): Schema => {

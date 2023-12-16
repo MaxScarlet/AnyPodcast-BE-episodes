@@ -1,6 +1,6 @@
-import { Document, Schema, SchemaDefinition } from 'mongoose';
+import { Document } from 'mongoose';
 import MongoDbHelper from '../helpers/mongoHelper';
-import { MediaSource } from './MediaSource';
+import { Media } from './Media';
 
 export interface IEpisode {
     ID: number;
@@ -9,7 +9,7 @@ export interface IEpisode {
     Title: string;
     Description: string;
     IsVisible: boolean;
-    Media: MediaSource;
+    Media: Media;
 }
 export class Episode implements IEpisode {
     ID: number = 0;
@@ -18,7 +18,7 @@ export class Episode implements IEpisode {
     Title: string = '';
     Description: string = '';
     IsVisible: boolean = false;
-    Media: MediaSource = new MediaSource();
+    Media: Media = new Media();
 
     constructor(data?: Episode | string) {
         if (data) {

@@ -6,7 +6,7 @@ import { Episode, EpisodeDoc } from '../models/Episode';
 // import MongoDbHelper from '../helpers/mongoHelper';
 // import { DynamoDbHelper } from '../helpers/dynamoDbHelper';
 
-export class DistrService implements CrudApiService<Episode> {
+export class EpisodeService implements CrudApiService<Episode> {
     // private readonly dbHelper: MongoDbHelper<DistributorDoc> | DynamoDbHelper<Distributor>;
 
     constructor(private dbHelper: IDbHelper<EpisodeDoc> | IDbHelper<Episode>) {
