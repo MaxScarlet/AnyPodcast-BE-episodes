@@ -123,34 +123,42 @@ console.log("::::::::::: Shrinker ::::::::::::::::::");
 console.log('::: Initial Folder: ', initialFolder);
 console.log('::: Distr Folder: ', distrFolder);
 
-fse.rmdirSync(path.join(distrFolder, 'node_modules'), { recursive: true, force: true });
+try {
+  fse.rmdirSync(path.join(distrFolder, 'node_modules'), { recursive: true, force: true });
+} catch (error) {
+  console.log( error);
+}
 
-Object.keys(packs.dependencies).forEach((packName: string) => {
-  results.total++;
-  const d = packs.dependencies[packName];
-  let pathTo;
-  if (d.dev) {
-    if (options.verbose) console.log(`${packName} ...dev package, skipped.`);
-    results.skipped++;
-  } else if (ignore.includes(packName)) {
-    if (options.verbose) console.log(`${packName} ...ignored, skipped.`);
-    results.ignored++;
-  } else if (asIs.includes(packName)) {
-    const pathFrom = path.join(initialFolder, packName);
-    pathTo = path.join(distrFolder, 'node_modules', packName);
-    fse.copySync(pathFrom, pathTo, { overwrite: true });
-    if (options.verbose) console.log(`${packName} ...copied as-is.`);
-    results.copied++;
-  } else {
-    if (options.verbose) console.log(`${packName} ...shrinking...`);
+const packKeys = Object.keys(packs.packages);
+packKeys.forEach((packNameFull: string) => {
+  if (packNameFull) {
+    results.total++;
+    const d = packs.packages[packNameFull];
+    const packName = packNameFull.replace("node_modules/", "");
+    let pathTo;
+    if (d.dev) {
+      if (options.verbose) console.log(`${packName} ...dev package, skipped.`);
+      results.skipped++;
+    } else if (ignore.includes(packName)) {
+      if (options.verbose) console.log(`${packName} ...ignored, skipped.`);
+      results.ignored++;
+    } else if (asIs.includes(packName)) {
+      const pathFrom = path.join(initialFolder, packName);
+      pathTo = path.join(distrFolder, 'node_modules', packName);
+      fse.copySync(pathFrom, pathTo, { overwrite: true });
+      if (options.verbose) console.log(`${packName} ...copied as-is.`);
+      results.copied++;
+    } else {
+      if (options.verbose) console.log(`${packName} ...shrinking...`);
       entry(packName);
-    if (options.verbose) console.log(`${packName} ...shrinked.`);
-    results.shrinked++;
-  }
+      if (options.verbose) console.log(`${packName} ...shrinked.`);
+      results.shrinked++;
+    }
 
-  if (extractFromDist.includes(packName)) {
-    fse.move(`${pathTo}\\dist\\index.js`, `${pathTo}\\index.js`);
-    if (options.verbose) console.log(`${packName}... extracted from dist`);
+    if (extractFromDist.includes(packName)) {
+      fse.move(`${pathTo}\\dist\\index.js`, `${pathTo}\\index.js`);
+      if (options.verbose) console.log(`${packName}... extracted from dist`);
+    }
   }
 });
 
