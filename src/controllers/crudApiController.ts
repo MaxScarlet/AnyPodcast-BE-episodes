@@ -43,14 +43,14 @@ export class CrudApiController<T> extends GenericApiController {
           }
           return this.successResponse(itemPut);
 
-        // case 'DELETE':
-        //   const idDelete = event.pathParameters?.id;
-        //   if (!idDelete) {
-        //     return this.errorResponse(StatusCodes.BAD_REQUEST, 'ID is required');
-        //   }
-        //   await this.service.delete(idDelete);
-        //   return this.successResponse(StatusCodes.GONE);
-
+        case 'DELETE':
+          const idDelete = event.pathParameters?.id;
+          if (!idDelete) {
+            return this.errorResponse(StatusCodes.BAD_REQUEST, 'ID is required');
+          }
+          await this.service.delete(idDelete);
+          return this.successResponse(StatusCodes.GONE);
+          
         default:
           return this.errorResponse(StatusCodes.METHOD_NOT_ALLOWED);
       }

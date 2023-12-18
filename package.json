@@ -31,6 +31,7 @@
     "shrink_pack_layer": "rm -rf release/lambda_layer.zip && npm run shrink && npm run pack_layer",
     "//-------------": "::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
   },
+
   "dependencies": {
     "aws-sdk": "^2.1451.0",
     "dotenv": "^16.3.1",
@@ -39,6 +40,7 @@
     "log4js": "^6.9.1",
     "mongoose": "^7.5.3"
   },
+  
   "devDependencies": {
     "@aws/dynamodb-data-mapper": "^0.7.3",
     "@types/aws-lambda": "^8.10.119",
