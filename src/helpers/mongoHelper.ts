@@ -6,7 +6,8 @@ import mongoose, {
   SchemaDefinition,
 } from "mongoose";
 import { IDbHelper } from "./IDbHelper";
-
+import { Search } from "../models/Search";
+import queryString from "query-string";
 export default class MongoDbHelper<T extends Document> implements IDbHelper<T> {
   private model!: Model<T>;
   private mongoConfig: MongoConfig;
@@ -25,8 +26,10 @@ export default class MongoDbHelper<T extends Document> implements IDbHelper<T> {
       this.collection
     );
   }
-  async get_list<T>(): Promise<T[]> {
-    return await this.model.find();
+  async get_list<T>(QSObject?: any): Promise<T[]> {
+    console.log("QSObject stringify",JSON.stringify(QSObject));
+    const criteria: Record<string, any> = this.convertToArgs(QSObject);
+    return await this.model.find(criteria);
   }
   async get<T>(id: string): Promise<T | null> {
     return await this.model.findById(id);
@@ -48,8 +51,10 @@ export default class MongoDbHelper<T extends Document> implements IDbHelper<T> {
     console.log("monogoHelper.delete", id);
     await this.model.findByIdAndRemove(id);
   }
-  async find<T>(args: any): Promise<T[]> {
-    const lst = await this.model.find(args).exec();
+
+  async search<T>(args: Search): Promise<T[]> {
+    const criteria: Record<string, any> = this.convertToArgs(args);
+    const lst = await this.model.find(criteria);
     return <T[]>lst;
   }
 
@@ -80,6 +85,24 @@ export default class MongoDbHelper<T extends Document> implements IDbHelper<T> {
 
     return new Schema(schemaFields);
   };
+
+  private convertToArgs(args: Search) {
+    const { SearchValue, ...searchCriteria } = args;
+    const searchValueRegex = SearchValue
+      ? new RegExp(SearchValue, "i")
+      : undefined;
+
+    const criteria: Record<string, any> = {
+      ...searchCriteria,
+    };
+    if (searchValueRegex) {
+      criteria.$or = [
+        { Title: { $regex: searchValueRegex } },
+        { Description: { $regex: searchValueRegex } },
+      ];
+    }
+    return criteria;
+  }
 }
 
 class MongoConfig {
