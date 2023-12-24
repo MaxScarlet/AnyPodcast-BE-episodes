@@ -36,8 +36,7 @@
     "http-method-enum": "^1.0.0",
     "http-status-codes": "^2.2.0",
     "log4js": "^6.9.1",
-    "mongoose": "^7.5.3",
-    "query-string": "^8.1.0"
+    "mongoose": "^7.5.3"
   },
   "devDependencies": {
     "@aws/dynamodb-data-mapper": "^0.7.3",

@@ -1,6 +1,7 @@
 import { APIGatewayProxyEvent } from "aws-lambda";
 import { GenericApiController } from "./genericApiController";
 import { StatusCodes } from "http-status-codes";
+import { SearchParams } from "../models/SearchParams";
 
 export class CrudApiController<T> extends GenericApiController {
   constructor(private service: CrudApiService<T>) {
@@ -15,14 +16,15 @@ export class CrudApiController<T> extends GenericApiController {
         case "GET":
           const id = event.pathParameters?.id;
           const queryString = event.queryStringParameters;
-          console.log("GET QS",queryString);
           let resp: any;
           if (id) {
             resp = await this.service.get(id);
           } else {
             resp = await this.service.get_all(queryString);
+            if (resp == null) {
+              return this.errorResponse(StatusCodes.BAD_REQUEST); // handle validation error
+            }
           }
-          // return this.handleresponse({statusCode: StatusCodes.OK, resp}, {statusCode: StatusCodes.NOT_FOUND, message: 'Not found'})
           if (!resp) {
             return this.errorResponse(StatusCodes.NOT_FOUND);
           }

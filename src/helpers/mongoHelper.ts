@@ -6,8 +6,7 @@ import mongoose, {
   SchemaDefinition,
 } from "mongoose";
 import { IDbHelper } from "./IDbHelper";
-import { Search } from "../models/Search";
-import queryString from "query-string";
+
 export default class MongoDbHelper<T extends Document> implements IDbHelper<T> {
   private model!: Model<T>;
   private mongoConfig: MongoConfig;
@@ -18,6 +17,7 @@ export default class MongoDbHelper<T extends Document> implements IDbHelper<T> {
   ) {
     this.mongoConfig = new MongoConfig("elementx.wg7wcp4.mongodb.net");
   }
+  
   public async connect() {
     await this.mongoConfig.connect();
     this.model = mongoose.model<T>(
@@ -26,18 +26,22 @@ export default class MongoDbHelper<T extends Document> implements IDbHelper<T> {
       this.collection
     );
   }
-  async get_list<T>(QSObject?: any): Promise<T[]> {
-    console.log("QSObject stringify",JSON.stringify(QSObject));
-    const criteria: Record<string, any> = this.convertToArgs(QSObject);
-    return await this.model.find(criteria);
+
+  async get_list<T>(qsObject?: any): Promise<T[]> {
+    console.log("qsObject stringify",JSON.stringify(qsObject));
+    const searchParams: Record<string, any> = this.convertToArgs(qsObject);
+    return await this.model.find(searchParams);
   }
+
   async get<T>(id: string): Promise<T | null> {
     return await this.model.findById(id);
   }
+
   async create<T>(data: T): Promise<T> {
     const itemCreated = await this.model.create(data);
     return <T>itemCreated;
   }
+
   async update<T>(id: string, updated: T): Promise<any> {
     const found = await this.model.findById(id).exec();
     if (!found) {
@@ -52,11 +56,11 @@ export default class MongoDbHelper<T extends Document> implements IDbHelper<T> {
     await this.model.findByIdAndRemove(id);
   }
 
-  async search<T>(args: Search): Promise<T[]> {
-    const criteria: Record<string, any> = this.convertToArgs(args);
-    const lst = await this.model.find(criteria);
-    return <T[]>lst;
-  }
+  // async search<T>(args: SearchParams): Promise<T[]> {
+  //   const criteria: Record<string, any> = this.convertToArgs(args);
+  //   const lst = await this.model.find(criteria);
+  //   return <T[]>lst;
+  // }
 
   static generateSchemaFromInterface = (interfaceObj: any): Schema => {
     const schemaFields: SchemaDefinition = {};
@@ -86,16 +90,14 @@ export default class MongoDbHelper<T extends Document> implements IDbHelper<T> {
     return new Schema(schemaFields);
   };
 
-  private convertToArgs(args: Search) {
+  private convertToArgs(args: any) {
     const { SearchValue, ...searchCriteria } = args;
-    const searchValueRegex = SearchValue
-      ? new RegExp(SearchValue, "i")
-      : undefined;
-
     const criteria: Record<string, any> = {
       ...searchCriteria,
     };
-    if (searchValueRegex) {
+    if (SearchValue) {
+      const searchValueRegex = new RegExp(SearchValue, "i");
+      // TODO: Make it generic for all string keys of the main entity
       criteria.$or = [
         { Title: { $regex: searchValueRegex } },
         { Description: { $regex: searchValueRegex } },

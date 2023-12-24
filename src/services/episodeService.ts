@@ -1,8 +1,8 @@
 import { CrudApiService } from "../controllers/crudApiController";
 import { IDbHelper } from "../helpers/IDbHelper";
-import queryString from "query-string";
 
 import { Episode, EpisodeDoc } from "../models/Episode";
+import { SearchParams } from "../models/SearchParams";
 
 // import MongoDbHelper from '../helpers/mongoHelper';
 // import { DynamoDbHelper } from '../helpers/dynamoDbHelper';
@@ -15,7 +15,11 @@ export class EpisodeService implements CrudApiService<Episode> {
     // this.dbHelper = new DynamoDbHelper<Distributor>(tableName);
   }
 
-  async get_all(queryString?: any): Promise<Episode[]> {
+  async get_all(queryString?: SearchParams): Promise<Episode[] | null> {
+    // check mandatory field - PodcastID
+    if (queryString && !queryString.PodcastID) {
+      return null;
+    }
     const items = await this.dbHelper.get_list<Episode>(queryString);
     return items;
   }
@@ -23,11 +27,6 @@ export class EpisodeService implements CrudApiService<Episode> {
   async get(id: string): Promise<Episode | null> {
     const item = await this.dbHelper.get<Episode>(id);
     return item || null;
-  }
-
-  async search(params: any): Promise<Episode[]> {
-    const items = await this.dbHelper.search<Episode>(params);
-    return items;
   }
 
   async create(item: Episode): Promise<void> {

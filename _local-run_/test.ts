@@ -14,6 +14,7 @@ import * as apiRequestGetList from './data/API_Event_GET.json';
 //POST apiRequest
 // import * as apiRequestGetList from './data/API_Event_POST.json';
 apiRequest = merge(apiRequestEmpty, apiRequestGetList) as APIGatewayProxyEvent;
+apiRequest.queryStringParameters = { PodcastID: "1" };
 // apiRequest.body = JSON.stringify({
 //     "PodcastID": "123123",
 //     "Title": "Ep-2",

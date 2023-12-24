@@ -5,5 +5,4 @@ export interface IDbHelper<T> {
   create<T>(data: T): Promise<T>;
   update<T>(id: string, updated: T): Promise<any>;
   delete<T>(id: string): Promise<void>;
-  search<T>(args: any): Promise<T[]>;
 }
