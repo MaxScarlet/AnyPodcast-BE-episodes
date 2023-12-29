@@ -44,12 +44,12 @@ export class GenericApiController {
     protected errorResponse(statusCode: StatusCodes, message?: string) {
         return {
             statusCode,
-            body: JSON.stringify({message: (message ?? GenericApiController.codeToReadble(statusCode)) }),
+            body: JSON.stringify({message: (message ?? GenericApiController.codeToReadable(statusCode)) }),
             headers: this.cors
         };
     }
 
-    public static codeToReadble(statusCode: StatusCodes) {
+    public static codeToReadable(statusCode: StatusCodes) {
         return `${GenericApiController.toReadable(StatusCodes[statusCode])} (${statusCode})`;
     }
 
@@ -62,14 +62,14 @@ export class GenericApiController {
 
     /**
      * Extracting from resource path required position
-     * @param eventResourse should be event.resource of APIGatewayProxyEvent
+     * @param eventResource should be event.resource of APIGatewayProxyEvent
      * @param pos integer from 1 to n
      * @returns 
      */
-    public static getRootResource(eventResourse: string, pos: number = 1): string | undefined {
+    public static getRootResource(eventResource: string, pos: number = 1): string | undefined {
         let res!: string;
-        if (eventResourse) {
-            const parts = eventResourse.replace(/^\/+|\/+$/g, '').split('/');
+        if (eventResource) {
+            const parts = eventResource.replace(/^\/+|\/+$/g, '').split('/');
             if (parts && parts.length > pos - 1) res = parts[pos - 1];
         }
         return res;

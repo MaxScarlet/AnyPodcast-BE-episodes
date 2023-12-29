@@ -13,7 +13,7 @@ const crudService = new Service(dbHelper);
 const crudController = new CrudApiController(crudService);
 
 export const handler = async (event: APIGatewayProxyEvent) => {
-  console.log(`Event: ${JSON.stringify(event)}`);
+//   console.log(`Event: ${JSON.stringify(event)}`);
   await dbHelper.connect();
   return crudController.handleRequest(event);
 };

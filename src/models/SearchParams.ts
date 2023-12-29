@@ -1,5 +1,5 @@
 export interface SearchParams {
-    PodcastID: string;
-    SearchValue?: string;
-    // IsVisible: boolean;
+  PodcastID: string;
+  SearchValue?: string;
+  // IsVisible: boolean;
 }

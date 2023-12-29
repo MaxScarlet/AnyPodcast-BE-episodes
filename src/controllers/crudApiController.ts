@@ -1,7 +1,6 @@
 import { APIGatewayProxyEvent } from "aws-lambda";
-import { GenericApiController } from "./genericApiController";
 import { StatusCodes } from "http-status-codes";
-import { SearchParams } from "../models/SearchParams";
+import { GenericApiController } from "./genericApiController";
 
 export class CrudApiController<T> extends GenericApiController {
   constructor(private service: CrudApiService<T>) {
@@ -73,7 +72,7 @@ export class CrudApiController<T> extends GenericApiController {
 
 export interface CrudApiService<T> {
   get(id: string): Promise<T | null>;
-  get_all(queryString?: any): Promise<T[] | null>;
+  get_all(queryString: any): Promise<T[] | null>;
   create(item: T): Promise<void>;
   update(id: string, item: T): Promise<T | null>;
   delete(id: string): Promise<void>;
