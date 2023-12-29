@@ -15,12 +15,13 @@ export class EpisodeService implements CrudApiService<Episode> {
     // this.dbHelper = new DynamoDbHelper<Distributor>(tableName);
   }
 
-  async get_all(queryString?: SearchParams): Promise<Episode[] | null> {
+  async get_all(queryString: SearchParams): Promise<Episode[] | null> {
     // check mandatory field - PodcastID
     if (queryString && !queryString.PodcastID) {
       return null;
     }
-    const items = await this.dbHelper.get_list<Episode>(queryString);
+    const fields = ["Title", "Description"];
+    const items = await this.dbHelper.get_list<Episode>(queryString , fields);
     return items;
   }
 

@@ -17,7 +17,7 @@ export default class MongoDbHelper<T extends Document> implements IDbHelper<T> {
   ) {
     this.mongoConfig = new MongoConfig("elementx.wg7wcp4.mongodb.net");
   }
-  
+
   public async connect() {
     await this.mongoConfig.connect();
     this.model = mongoose.model<T>(
@@ -27,10 +27,13 @@ export default class MongoDbHelper<T extends Document> implements IDbHelper<T> {
     );
   }
 
-  async get_list<T>(qsObject?: any): Promise<T[]> {
-    console.log("qsObject stringify",JSON.stringify(qsObject));
-    const searchParams: Record<string, any> = this.convertToArgs(qsObject);
-    return await this.model.find(searchParams);
+  async get_list<T>(qsObject?: any, fields?: string[]): Promise<T[]> {
+    console.log("qsObject stringify", JSON.stringify(qsObject));
+    const searchParams: Record<string, any> | undefined = this.convertToArgs(
+      qsObject,
+      fields!
+    );
+    return await this.model.find(searchParams!);
   }
 
   async get<T>(id: string): Promise<T | null> {
@@ -90,18 +93,17 @@ export default class MongoDbHelper<T extends Document> implements IDbHelper<T> {
     return new Schema(schemaFields);
   };
 
-  private convertToArgs(args: any) {
-    const { SearchValue, ...searchCriteria } = args;
+  private convertToArgs(args: any, fields: string[]) {
+    const { SearchValue, Fields, ...searchCriteria } = args;
     const criteria: Record<string, any> = {
       ...searchCriteria,
     };
     if (SearchValue) {
       const searchValueRegex = new RegExp(SearchValue, "i");
-      // TODO: Make it generic for all string keys of the main entity
-      criteria.$or = [
-        { Title: { $regex: searchValueRegex } },
-        { Description: { $regex: searchValueRegex } },
-      ];
+
+      criteria.$or = fields.map((key) => ({
+        [key]: { $regex: searchValueRegex },
+      }));
     }
     return criteria;
   }
