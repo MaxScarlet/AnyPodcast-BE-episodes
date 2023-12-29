@@ -21,7 +21,7 @@ export class EpisodeService implements CrudApiService<Episode> {
       return null;
     }
     const fields = ["Title", "Description"];
-    const items = await this.dbHelper.get_list<Episode>(queryString , fields);
+    const items = await this.dbHelper.get_list<Episode>(queryString, fields);
     return items;
   }
 
@@ -31,6 +31,7 @@ export class EpisodeService implements CrudApiService<Episode> {
   }
 
   async create(item: Episode): Promise<void> {
+    item.Created = new Date().toISOString();
     await this.dbHelper.create<Episode>(item);
   }
 
