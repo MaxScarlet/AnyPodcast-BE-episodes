@@ -3,7 +3,6 @@ import MongoDbHelper from '../helpers/mongoHelper';
 import { Media } from './Media';
 
 export interface IEpisode {
-    ID: number;
     Created: string;
     PodcastID: string;
     Title: string;
@@ -12,7 +11,6 @@ export interface IEpisode {
     Media: Media;
 }
 export class Episode implements IEpisode {
-  ID: number = 0;
   Created: string = "";
   PodcastID: string = "";
   Title: string = "";
