@@ -3,20 +3,19 @@ import MongoDbHelper from '../helpers/mongoHelper';
 import { Media } from './Media';
 
 export interface IEpisode {
-    Created: string;
+    Created?: string;
     PodcastID: string;
     Title: string;
     Description: string;
     IsVisible: boolean;
-    Media: Media;
 }
 export class Episode implements IEpisode {
-  Created: string = "";
+  Created?: string = "";
   PodcastID: string = "";
   Title: string = "";
   Description: string = "";
   IsVisible: boolean = false;
-  Media: Media = new Media();
+  // Media: Media = new Media();
 
   constructor(data?: Episode | string) {
     if (data) {
@@ -26,10 +25,10 @@ export class Episode implements IEpisode {
     }
   }
 
-  forList() {
-    const { Media: MediaSources, ...objFiltered } = this;
-    return objFiltered;
-  }
+  // forList() {
+  //   const { Media: MediaSources, ...objFiltered } = this;
+  //   return objFiltered;
+  // }
   processMediaSources() {
     // some code
   }
