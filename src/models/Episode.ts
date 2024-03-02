@@ -1,37 +1,44 @@
-import { Document } from 'mongoose';
-import MongoDbHelper from '../helpers/mongoHelper';
-import { Media } from './Media';
+import { Document } from "mongoose";
+import MongoDbHelper from "../helpers/mongoHelper";
+import { Media } from "./Media";
 
 export interface IEpisode {
-    Created?: string;
-    PodcastID: string;
-    Title: string;
-    Description: string;
-    IsVisible: boolean;
+	Created?: string;
+	PodcastID: string;
+	Title: string;
+	Description: string;
+	IsVisible: boolean;
+	PosterName: string;
+	MediaFile: string;
+	MediaFileOriginal: string;
 }
 export class Episode implements IEpisode {
-  Created?: string = "";
-  PodcastID: string = "";
-  Title: string = "";
-  Description: string = "";
-  IsVisible: boolean = false;
-  // Media: Media = new Media();
+	Created?: string = "";
+	PodcastID: string = "";
+	Title: string = "";
+	Description: string = "";
+	IsVisible: boolean = false;
+	PosterName: string = "";
+	MediaFile: string = "";
+	MediaFileOriginal: string = "";
 
-  constructor(data?: Episode | string) {
-    if (data) {
-      if (typeof data !== "object") data = JSON.parse(data);
-      Object.assign(this, data);
-    } else {
-    }
-  }
+	// Media: Media = new Media();
 
-  // forList() {
-  //   const { Media: MediaSources, ...objFiltered } = this;
-  //   return objFiltered;
-  // }
-  processMediaSources() {
-    // some code
-  }
+	constructor(data?: Episode | string) {
+		if (data) {
+			if (typeof data !== "object") data = JSON.parse(data);
+			Object.assign(this, data);
+		} else {
+		}
+	}
+
+	// forList() {
+	//   const { Media: MediaSources, ...objFiltered } = this;
+	//   return objFiltered;
+	// }
+	processMediaSources() {
+		// some code
+	}
 }
 
 export const EpisodeSchema = MongoDbHelper.generateSchemaFromInterface(new Episode());
