@@ -9,8 +9,8 @@ export interface IEpisode {
 	Description: string;
 	IsVisible: boolean;
 	PosterName: string;
-	MediaFile: string;
-	MediaFileOriginal: string;
+	MediaFile?: string;
+	MediaFileOriginal?: string;
 }
 export class Episode implements IEpisode {
 	Created?: string = "";
@@ -19,8 +19,8 @@ export class Episode implements IEpisode {
 	Description: string = "";
 	IsVisible: boolean = false;
 	PosterName: string = "";
-	MediaFile: string = "";
-	MediaFileOriginal: string = "";
+	MediaFile?: string = "";
+	MediaFileOriginal?: string = "";
 
 	// Media: Media = new Media();
 
