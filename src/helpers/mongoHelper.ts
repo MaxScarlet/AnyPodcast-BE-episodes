@@ -102,31 +102,29 @@ export default class MongoDbHelper<T extends Document> implements IDbHelper<T> {
 }
 
 class MongoConfig {
-  constructor(private clusterName: string) {}
-  public user = "dbOwner";
-  public pass = "WQdmUA82JK2qO5Vq";
-  public dbName = process.env.DB_NAME;
+	constructor(private clusterName: string) {}
+	public user = "dbOwner"; //Change to your user
+	public pass = process.env.MONGO_PASS;
+	public dbName = process.env.DB_NAME;
 
-  public get connectionString(): string {
-    return `mongodb+srv://${this.user}:${this.pass}@${this.clusterName}/?retryWrites=true&w=majority`;
-  }
+	public get connectionString(): string {
+		return `mongodb+srv://${this.user}:${this.pass}@${this.clusterName}/?retryWrites=true&w=majority`;
+	}
 
-  public async connect(): Promise<mongoose.Connection> {
-    await mongoose.connect(this.connectionString, {
-      dbName: this.dbName,
-    });
+	public async connect(): Promise<mongoose.Connection> {
+		await mongoose.connect(this.connectionString, {
+			dbName: this.dbName,
+		});
 
-    const db = mongoose.connection;
+		const db = mongoose.connection;
 
-    db.on("error", (err) => {
-      console.error(`MongoDB connection error: ${err}`);
-    });
+		db.on("error", (err) => {
+			console.error(`MongoDB connection error: ${err}`);
+		});
 
-    db.once("open", () => {
-      console.log(
-        `Connected to MongoDB [${this.clusterName}], DB: [${this.dbName}]`
-      );
-    });
-    return db;
-  }
+		db.once("open", () => {
+			console.log(`Connected to MongoDB [${this.clusterName}], DB: [${this.dbName}]`);
+		});
+		return db;
+	}
 }
