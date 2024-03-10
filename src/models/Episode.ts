@@ -1,6 +1,5 @@
 import { Document } from "mongoose";
 import MongoDbHelper from "../helpers/mongoHelper";
-import { Media } from "./Media";
 
 export interface IEpisode {
 	Created?: string;
@@ -22,22 +21,12 @@ export class Episode implements IEpisode {
 	MediaFile?: string = "";
 	MediaFileOriginal?: string = "";
 
-	// Media: Media = new Media();
-
 	constructor(data?: Episode | string) {
 		if (data) {
 			if (typeof data !== "object") data = JSON.parse(data);
 			Object.assign(this, data);
 		} else {
 		}
-	}
-
-	// forList() {
-	//   const { Media: MediaSources, ...objFiltered } = this;
-	//   return objFiltered;
-	// }
-	processMediaSources() {
-		// some code
 	}
 }
 

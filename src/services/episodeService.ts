@@ -4,19 +4,13 @@ import { IDbHelper } from "../helpers/IDbHelper";
 import { Episode, EpisodeDoc } from "../models/Episode";
 import { SearchParams } from "../models/SearchParams";
 
-// import MongoDbHelper from '../helpers/mongoHelper';
-// import { DynamoDbHelper } from '../helpers/dynamoDbHelper';
 
 export class EpisodeService implements CrudApiService<Episode> {
-	// private readonly dbHelper: MongoDbHelper<DistributorDoc> | DynamoDbHelper<Distributor>;
 
 	constructor(private dbHelper: IDbHelper<EpisodeDoc> | IDbHelper<Episode>) {
-		// this.dbHelper = new MongoDbHelper<DistributorDoc>('Distributor', DistributorSchema, tableName);
-		// this.dbHelper = new DynamoDbHelper<Distributor>(tableName);
 	}
 
 	async get_all(queryString: SearchParams): Promise<Episode[] | null> {
-		// check mandatory field - PodcastID
 		if (queryString && !queryString.PodcastID) {
 			return null;
 		}
