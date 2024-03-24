@@ -6,6 +6,7 @@ export interface IEpisode {
 	PodcastID: string;
 	Title: string;
 	Description: string;
+	Scheduled: string;
 	IsVisible: boolean;
 	PosterName: string;
 	MediaFile?: string;
@@ -16,6 +17,7 @@ export class Episode implements IEpisode {
 	PodcastID: string = "";
 	Title: string = "";
 	Description: string = "";
+	Scheduled: string = "";
 	IsVisible: boolean = false;
 	PosterName: string = "";
 	MediaFile?: string = "";
@@ -25,7 +27,6 @@ export class Episode implements IEpisode {
 		if (data) {
 			if (typeof data !== "object") data = JSON.parse(data);
 			Object.assign(this, data);
-		} else {
 		}
 	}
 }
