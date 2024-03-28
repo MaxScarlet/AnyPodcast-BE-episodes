@@ -14,7 +14,7 @@
     "shrink_": "rm -rf dist_layer && ts-node shrinker.ts && mv dist dist_layer && cd ./dist_layer && mkdir -p nodejs && mv node_modules nodejs",
     "shrink": "rm -rf dist_layer && ts-node shrinker.ts && ./shrinker_ren.sh",
     "//----dist----": "::: Scripts for create distributive ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::",
-    "dist": "npm run compile && npm run shrink",
+    "dist": "npm i && npm run compile && npm run shrink",
     "dist_externalize": "npm run compile && ts-node shrinker.ts -e && mv dist/node_modules ../$npm_package_name-$npm_package_version-dist && cp -R dist_func/* ../$npm_package_name-$npm_package_version-dist && rm -rf dist",
     "clean_temp": "rm -rf dist_func && rm -rf dist_layer && rm -rf release && rm -rf export && rm -rf generated && rm -rf dist",
     "//----packs----": "::: Scripts for packaging ZIPs for deploy ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::",
