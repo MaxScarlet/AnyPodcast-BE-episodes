@@ -4,19 +4,25 @@ import { IDbHelper } from "../helpers/IDbHelper";
 import { Episode, EpisodeDoc } from "../models/Episode";
 import { SearchParams } from "../models/SearchParams";
 
-
 export class EpisodeService implements CrudApiService<Episode> {
-
-	constructor(private dbHelper: IDbHelper<EpisodeDoc> | IDbHelper<Episode>) {
-	}
+	constructor(private dbHelper: IDbHelper<EpisodeDoc> | IDbHelper<Episode>) {}
 
 	async get_all(queryString: SearchParams): Promise<Episode[] | null> {
 		if (queryString && !queryString.PodcastID) {
 			return null;
 		}
 		const fields = ["Title", "Description"];
-		const items = await this.dbHelper.get_list<Episode>(queryString, fields);
-		return items;
+		const getItems = await this.dbHelper.get_list<Episode>(queryString, fields);
+		const found = getItems.find((item) => item.IsVisible && !item.Published);
+		if (found) {
+			for (const item of getItems) {
+				if (item.IsVisible && !item.Published) {
+					item.Published = item.Created;
+					await this.dbHelper.update<Episode>(item["_id"], item);
+				}
+			}
+		}
+		return getItems;
 	}
 
 	async get(id: string): Promise<Episode | null> {

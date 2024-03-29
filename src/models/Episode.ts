@@ -11,6 +11,7 @@ export interface IEpisode {
 	PosterName: string;
 	MediaFile?: string;
 	MediaFileOriginal?: string;
+	Published?: string;
 }
 export class Episode implements IEpisode {
 	Created?: string = "";
@@ -22,6 +23,7 @@ export class Episode implements IEpisode {
 	PosterName: string = "";
 	MediaFile?: string = "";
 	MediaFileOriginal?: string = "";
+	Published?: string = "";
 
 	constructor(data?: Episode | string) {
 		if (data) {
